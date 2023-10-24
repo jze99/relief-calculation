@@ -1,4 +1,8 @@
 import flet as ft
+import time 
+import subprocess
+import sys
+import json
 
 def main(page: ft.Page):
     page.title = "Flet counter example"
@@ -7,7 +11,7 @@ def main(page: ft.Page):
     heightText = 40
     
     #создаём текстовые поля 
-    text_fields = [
+    textFields = [
         [
             ft.TextField(label="0/0", width=widthText, height=heightText),
             ft.TextField(label="0/1", width=widthText, height=heightText),
@@ -94,16 +98,6 @@ def main(page: ft.Page):
         ],
     ]
     
-    
-    referenceValues = [
-        [],
-        [],
-        [],
-        [],
-        [],
-        []
-    ]
-    
     page.window_width = 580 # Задаем ширину окна
     page.window_height = 600 # Задаем высоту окна
     page.window_resizable = False # Запрещаем изменять размеры окна
@@ -112,75 +106,103 @@ def main(page: ft.Page):
     #добавляем текстовые поля в интерфейс
     page.add(ft.Row(
         [
-            text_fields[0][0],
-            text_fields[0][1],
-            text_fields[0][2],
-            text_fields[0][3],
-            text_fields[0][4],
-            text_fields[0][5],
-            text_fields[0][6],
+            textFields[0][0],
+            textFields[0][1],
+            textFields[0][2],
+            textFields[0][3],
+            textFields[0][4],
+            textFields[0][5],
+            textFields[0][6],
         ]))
     page.add(ft.Row(
         [
-            text_fields[1][0],
-            text_fields[1][1],
-            text_fields[1][2],
-            text_fields[1][3],
-            text_fields[1][4],
-            text_fields[1][5],
-            text_fields[1][6],
+            textFields[1][0],
+            textFields[1][1],
+            textFields[1][2],
+            textFields[1][3],
+            textFields[1][4],
+            textFields[1][5],
+            textFields[1][6],
         ]))
     page.add(ft.Row(
         [
-            text_fields[2][0],
-            text_fields[2][1],
-            text_fields[2][2],
-            text_fields[2][3],
-            text_fields[2][4],
-            text_fields[2][5],
-            text_fields[2][6],
+            textFields[2][0],
+            textFields[2][1],
+            textFields[2][2],
+            textFields[2][3],
+            textFields[2][4],
+            textFields[2][5],
+            textFields[2][6],
         ]))
     page.add(ft.Row(
         [
-            text_fields[3][0],
-            text_fields[3][1],
-            text_fields[3][2],
-            text_fields[3][3],
-            text_fields[3][4],
-            text_fields[3][5],
-            text_fields[3][6],
+            textFields[3][0],
+            textFields[3][1],
+            textFields[3][2],
+            textFields[3][3],
+            textFields[3][4],
+            textFields[3][5],
+            textFields[3][6],
         ]))
     page.add(ft.Row(
         [
-            text_fields[4][0],
-            text_fields[4][1],
-            text_fields[4][2],
-            text_fields[4][3],
-            text_fields[4][4],
-            text_fields[4][5],
-            text_fields[4][6],
+            textFields[4][0],
+            textFields[4][1],
+            textFields[4][2],
+            textFields[4][3],
+            textFields[4][4],
+            textFields[4][5],
+            textFields[4][6],
         ]))
     page.add(ft.Row(
         [
-            text_fields[5][0],
-            text_fields[5][1],
-            text_fields[5][2],
-            text_fields[5][3],
-            text_fields[5][4],
-            text_fields[5][5],
-            text_fields[5][6],
+            textFields[5][0],
+            textFields[5][1],
+            textFields[5][2],
+            textFields[5][3],
+            textFields[5][4],
+            textFields[5][5],
+            textFields[5][6],
         ]))
     page.add(ft.Row(
         [
-            text_fields[6][0],
-            text_fields[6][1],
-            text_fields[6][2],
-            text_fields[6][3],
-            text_fields[6][4],
-            text_fields[6][5],
-            text_fields[6][6], 
+            textFields[6][0],
+            textFields[6][1],
+            textFields[6][2],
+            textFields[6][3],
+            textFields[6][4],
+            textFields[6][5],
+            textFields[6][6], 
         ]))
-
-    page.add(ft.Row([ft.ElevatedButton("start", width=100, height=50)]))
+    
+    referenceValues=[[],[],[],[],[],[],[]]
+    
+    
+    def Start(e):
+        erorr = False
+        
+        for i in range(len(textFields)):
+            for j in range(len(textFields[i])):
+                if textFields[i][j].value == "":
+                    erorr = True
+                else:
+                    if len(referenceValues[i]) < len(textFields[i]):
+                        referenceValues[i].append([])
+                    referenceValues[i][j] = float(textFields[i][j].value)
+        
+        if erorr == True:
+            startButton.text = "ERROR"
+            page.update()
+            time.sleep(3)
+            startButton.text = "start"
+            page.update()  
+        else:
+            jsonReferenceValues = json.dumps(referenceValues)
+            subprocess.call(["python", "Drawing.py", jsonReferenceValues])      
+            sys.exit()
+    
+    startButton = ft.TextButton(text="start", width=100, height=50, on_click=Start)
+    
+    page.add(ft.Row([startButton]))
 
 ft.app(target=main)
