@@ -190,16 +190,16 @@ def main(page: ft.Page):
                         referenceValues[i].append([])
                     referenceValues[i][j] = float(textFields[i][j].value)
         
-        if erorr == True:
-            startButton.text = "ERROR"
-            page.update()
-            time.sleep(3)
-            startButton.text = "start"
-            page.update()  
-        else:
-            jsonReferenceValues = json.dumps(referenceValues)
-            subprocess.call(["python", "Drawing.py", jsonReferenceValues])      
-            sys.exit()
+        #if erorr == True:
+        #    startButton.text = "ERROR"
+        #    page.update()
+        #    time.sleep(3)
+        #    startButton.text = "start"
+        #    page.update()  
+        #else:
+        jsonReferenceValues = json.dumps(referenceValues)
+        subprocess.call(["python", "Drawing.py", jsonReferenceValues])      
+        sys.exit()
     
     startButton = ft.TextButton(text="start", width=100, height=50, on_click=Start)
     
