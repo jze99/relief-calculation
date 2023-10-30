@@ -183,6 +183,7 @@ def main(page: ft.Page):
         
         for i in range(len(textFields)):
             for j in range(len(textFields[i])):
+                textFields[i][j].value = float(j/3+i*2)
                 if textFields[i][j].value == "":
                     erorr = True
                 else:
